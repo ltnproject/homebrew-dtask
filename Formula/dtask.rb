@@ -5,38 +5,50 @@ class Dtask < Formula
   url "https://github.com/ltnproject/dtask/releases/download/v#{version}/dTask-#{version}.zip"
   sha256 "337ac0dbaf8a39a4f19bb487c515966e92823e92c15871d7f99618e64168241b"
 
+  # No dependencies — pure macOS app bundle
+  depends_on :macos => :sonoma
+  depends_on hardware: :arm
+
   def install
+    # Store the app bundle in Homebrew's Cellar
     prefix.install "dTask.app"
-    # Install a launcher script into bin so `dtask` works from terminal
+
+    # Create a `dtask` launcher in PATH
     (bin/"dtask").write <<~SH
       #!/bin/bash
       open "#{prefix}/dTask.app" "$@"
     SH
-    # Install a post-install helper that copies to /Applications with sudo
-    (libexec/"install-to-applications.sh").write <<~SH
-      #!/bin/bash
-      set -e
-      APP_SRC="#{prefix}/dTask.app"
-      APP_DST="/Applications/dTask.app"
-      echo "Installing dTask to /Applications..."
-      sudo rm -rf "$APP_DST"
-      sudo cp -R "$APP_SRC" "$APP_DST"
-      sudo xattr -r -d com.apple.quarantine "$APP_DST" 2>/dev/null || true
-      echo "✅ dTask installed to /Applications/dTask.app"
-      echo "   Launch: open /Applications/dTask.app"
-    SH
-    chmod "+x", libexec/"install-to-applications.sh"
+  end
+
+  def post_install
+    # Install to ~/Applications (no sudo required)
+    user_apps = File.expand_path("~/Applications")
+    FileUtils.mkdir_p(user_apps)
+    FileUtils.rm_rf("#{user_apps}/dTask.app")
+    FileUtils.cp_r("#{prefix}/dTask.app", "#{user_apps}/dTask.app")
+
+    # Strip quarantine so macOS doesn't block launch
+    system "/usr/bin/xattr", "-r", "-d", "com.apple.quarantine",
+           "#{user_apps}/dTask.app"
+  rescue => e
+    opoo "Could not copy to ~/Applications: #{e.message}"
+    opoo "Run manually: open #{prefix}/dTask.app"
   end
 
   def caveats
+    user_apps = File.expand_path("~/Applications")
     <<~EOS
-      dTask is installed in Homebrew's Cellar. You can run it with:
+      dTask has been installed to:
+        #{user_apps}/dTask.app
+
+      Launch it with:
+        open ~/Applications/dTask.app
+      Or from Terminal:
         dtask
 
-      To also copy it to /Applications (recommended), run:
-        sudo bash #{libexec}/install-to-applications.sh
-
-      This copies dTask.app to /Applications and removes the quarantine attribute.
+      To also place it in /Applications (system-wide), run:
+        sudo cp -R #{prefix}/dTask.app /Applications/dTask.app
+        sudo xattr -r -d com.apple.quarantine /Applications/dTask.app
     EOS
   end
 

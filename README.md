@@ -1,29 +1,33 @@
 # dTask Homebrew Tap
 
-Homebrew tap for [dTask](https://github.com/ltnproject/dtask) — Apple Silicon system monitor.
+Homebrew tap for [dTask](https://github.com/ltnproject/dtask) — Apple Silicon system monitor with liquid glass UI.
 
 ## Install
 
+### One command (fresh install):
 ```bash
 brew install ltnproject/dtask/dtask
 ```
 
-That's it. Homebrew will:
-1. Download `dTask.app`
-2. Copy it to `/Applications/dTask.app`
-3. Automatically remove the macOS quarantine attribute
-
-## Or tap first, then install
-
+### Or tap first, then install:
 ```bash
 brew tap ltnproject/dtask
 brew install dtask
 ```
 
+After install, dTask is placed in `~/Applications/dTask.app` with quarantine automatically removed.
+
+Launch with:
+```bash
+open ~/Applications/dTask.app
+# or
+dtask
+```
+
 ## Requirements
 
-- Apple Silicon (M1 / M2 / M3 / M4 or later)
-- macOS 14 Sonoma or macOS 15 Sequoia
+- **Apple Silicon** (M1 / M2 / M3 / M4 or later)
+- **macOS 14 Sonoma** or **macOS 15 Sequoia**
 
 ## Update
 
@@ -36,7 +40,7 @@ brew upgrade dtask
 
 ```bash
 brew uninstall dtask
-sudo rm -rf /Applications/dTask.app
+rm -rf ~/Applications/dTask.app
 ```
 
 ## Project
