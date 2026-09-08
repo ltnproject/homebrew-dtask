@@ -12,6 +12,11 @@ cask "dtask" do
 
   app "dTask-1.0.0/dTask.app"
 
+  postflight do
+    system_command "xattr",
+                   args: ["-cr", "#{appdir}/dTask.app"]
+  end
+
   zap trash: [
     "~/Library/Preferences/org.dtask.app.plist",
     "~/Library/Saved Application State/org.dtask.app.savedState",
