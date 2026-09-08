@@ -1,27 +1,55 @@
 # dTask Homebrew Tap
 
-Homebrew tap for [dTask](https://github.com/ltnproject/dtask) — Apple Silicon system monitor with liquid glass UI.
+Official Homebrew tap for [dTask](https://github.com/ltnproject/dtask) — Apple Silicon system monitor with cute liquid glass design.
 
-## Install
+## Installation
 
-### One command (fresh install):
+### Method 1: Direct one-liner (new users)
+
 ```bash
 brew install ltnproject/dtask/dtask
 ```
+*(or `brew install ltnproject/dtask/dTask`)*
 
-### Or tap first, then install:
+---
+
+### Method 2: Tap then install
+
 ```bash
 brew tap ltnproject/dtask
 brew install dtask
 ```
+*(or `brew install dTask`)*
 
-After install, dTask is placed in `~/Applications/dTask.app` with quarantine automatically removed.
+---
 
-Launch with:
+## What Happens Automatically
+
+1. 📦 Downloads `dTask-1.0.0.zip` from GitHub Releases
+2. 🚀 Copies `dTask.app` to `/Applications/dTask.app`
+3. 🛡️ Automatically strips the macOS quarantine attribute (`xattr -r -d com.apple.quarantine /Applications/dTask.app`)
+4. ⚡ Creates `dtask` CLI launcher in your `$PATH`
+
+You can launch it immediately:
+
 ```bash
-open ~/Applications/dTask.app
+open /Applications/dTask.app
 # or
 dtask
+```
+
+## Updating
+
+```bash
+brew update
+brew upgrade dtask
+```
+
+## Uninstalling
+
+```bash
+brew uninstall dtask
+rm -rf /Applications/dTask.app
 ```
 
 ## Requirements
@@ -29,20 +57,6 @@ dtask
 - **Apple Silicon** (M1 / M2 / M3 / M4 or later)
 - **macOS 14 Sonoma** or **macOS 15 Sequoia**
 
-## Update
+---
 
-```bash
-brew update
-brew upgrade dtask
-```
-
-## Uninstall
-
-```bash
-brew uninstall dtask
-rm -rf ~/Applications/dTask.app
-```
-
-## Project
-
-→ [github.com/ltnproject/dtask](https://github.com/ltnproject/dtask)
+**Repository:** [github.com/ltnproject/dtask](https://github.com/ltnproject/dtask)
