@@ -13,7 +13,7 @@ cask "dtask" do
   app "dTask-1.0.0/dTask.app"
 
   postflight_steps do
-    run "/usr/bin/xattr", args: ["-cr", "#{appdir}/dTask.app"]
+    run "/usr/bin/xattr", args: ["-cr", "/Applications/dTask.app"]
   end
 
   zap trash: [
