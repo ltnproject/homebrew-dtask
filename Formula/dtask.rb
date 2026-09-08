@@ -3,7 +3,7 @@ class Dtask < Formula
   homepage "https://github.com/ltnproject/dtask"
   version "1.0.0"
   url "https://github.com/ltnproject/dtask/releases/download/v#{version}/dTask-#{version}.zip"
-  sha256 "c5b9281be4d4b791f7dda643d3984a4900d5771094ab2b7a805e0003f8ef6b4c"
+  sha256 "337ac0dbaf8a39a4f19bb487c515966e92823e92c15871d7f99618e64168241b"
 
   def install
     prefix.install "dTask.app"
