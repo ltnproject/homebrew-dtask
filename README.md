@@ -4,7 +4,7 @@ Official Homebrew tap for [dTask](https://github.com/ltnproject/dtask) — Apple
 
 ## Installation
 
-### Method 1: Direct one-liner (new users)
+### One-liner (recommended)
 
 ```bash
 brew install ltnproject/dtask/dtask
@@ -13,7 +13,7 @@ brew install ltnproject/dtask/dtask
 
 ---
 
-### Method 2: Tap then install
+### Tap and install
 
 ```bash
 brew tap ltnproject/dtask
@@ -25,23 +25,18 @@ brew install dtask
 
 ## What Happens Automatically
 
-1. 📦 Downloads `dTask-1.0.0.zip` from GitHub Releases
-2. 🚀 Copies `dTask.app` to `/Applications/dTask.app`
-3. 🛡️ Automatically strips the macOS quarantine attribute (`xattr -r -d com.apple.quarantine /Applications/dTask.app`)
-4. ⚡ Creates `dtask` CLI launcher in your `$PATH`
-
-You can launch it immediately:
+1. 📦 Downloads `dTask-1.0.0.zip` from official GitHub Releases
+2. 🚀 Installs `dTask.app` directly into `/Applications/dTask.app`
+3. 🛡️ Removes the macOS quarantine attribute automatically
+4. 💻 Ready to launch from Finder, Launchpad, Spotlight, or Terminal:
 
 ```bash
 open /Applications/dTask.app
-# or
-dtask
 ```
 
 ## Updating
 
 ```bash
-brew update
 brew upgrade dtask
 ```
 
@@ -49,7 +44,6 @@ brew upgrade dtask
 
 ```bash
 brew uninstall dtask
-rm -rf /Applications/dTask.app
 ```
 
 ## Requirements
@@ -59,4 +53,4 @@ rm -rf /Applications/dTask.app
 
 ---
 
-**Repository:** [github.com/ltnproject/dtask](https://github.com/ltnproject/dtask)
+**Project & Source Code:** [github.com/ltnproject/dtask](https://github.com/ltnproject/dtask)
