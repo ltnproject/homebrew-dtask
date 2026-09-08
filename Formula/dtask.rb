@@ -7,30 +7,41 @@ class Dtask < Formula
 
   def install
     prefix.install "dTask.app"
-  end
-
-  def post_install
-    system "/bin/rm", "-rf", "/Applications/dTask.app"
-    system "/bin/cp", "-R", "#{prefix}/dTask.app", "/Applications/dTask.app"
-    system "/usr/bin/xattr", "-r", "-d", "com.apple.quarantine", "/Applications/dTask.app"
-  rescue StandardError
-    # quarantine removal is best-effort
+    # Install a launcher script into bin so `dtask` works from terminal
+    (bin/"dtask").write <<~SH
+      #!/bin/bash
+      open "#{prefix}/dTask.app" "$@"
+    SH
+    # Install a post-install helper that copies to /Applications with sudo
+    (libexec/"install-to-applications.sh").write <<~SH
+      #!/bin/bash
+      set -e
+      APP_SRC="#{prefix}/dTask.app"
+      APP_DST="/Applications/dTask.app"
+      echo "Installing dTask to /Applications..."
+      sudo rm -rf "$APP_DST"
+      sudo cp -R "$APP_SRC" "$APP_DST"
+      sudo xattr -r -d com.apple.quarantine "$APP_DST" 2>/dev/null || true
+      echo "✅ dTask installed to /Applications/dTask.app"
+      echo "   Launch: open /Applications/dTask.app"
+    SH
+    chmod "+x", libexec/"install-to-applications.sh"
   end
 
   def caveats
     <<~EOS
-      dTask has been installed to:
-        /Applications/dTask.app
+      dTask is installed in Homebrew's Cellar. You can run it with:
+        dtask
 
-      The macOS quarantine attribute has been automatically removed.
-      Launch with:
-        open /Applications/dTask.app
+      To also copy it to /Applications (recommended), run:
+        sudo bash #{libexec}/install-to-applications.sh
 
-      Requires Apple Silicon (M1+) and macOS 14 Sonoma or later.
+      This copies dTask.app to /Applications and removes the quarantine attribute.
     EOS
   end
 
   test do
     assert_predicate prefix/"dTask.app", :directory?
+    assert_predicate bin/"dtask", :executable?
   end
 end
